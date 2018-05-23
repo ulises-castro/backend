@@ -5,7 +5,7 @@ const passport = require('passport');
 const app = express();
 const UserModel = require('./model/model');
 
-mongoose.connect('mongodb://127.0.0.1:27017/passport-jwt');
+mongoose.connect('mongodb://127.0.0.1:27017/passport-jwt', { useMongoClient : true });
 mongoose.connection.on('error', error => console.log(error) );
 mongoose.Promise = global.Promise;
 
@@ -16,8 +16,9 @@ app.use( bodyParser.urlencoded({ extended : false }) );
 const routes = require('./routes/routes');
 const secureRoute = require('./routes/secure-route');
 
+app.use(passport.initialize());
 app.use('/', routes);
-
+//We plugin our jwt strategy as a middleware so only verified users can access this route
 app.use('/user', passport.authenticate('jwt', { session : false }), secureRoute );
 
 //Handle errors

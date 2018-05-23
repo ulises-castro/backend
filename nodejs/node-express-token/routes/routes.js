@@ -11,6 +11,11 @@ router.post('/signup', passport.authenticate('signup', { session: false }), asyn
   });
 });
 
+
+router.get('/hola',  function (req, res) {
+  res.send('Hello World!');
+});
+
 router.post('/login', async (req, res, next) => {
   passport.authenticate('login', async (err, user, info) => {
     try {
